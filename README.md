@@ -1,6 +1,6 @@
 ## LeafletMap
 
-####This is a fork of https://github.com/ssaring/sportstracker/tree/master/leafletmap
+#### This is a fork of https://github.com/ssaring/sportstracker/tree/master/leafletmap
 
 LeafletMap is a JavaFX component for displaying an OpenStreetMap based map
 inside a JavaFX WebView by using the Leaflet JavaScript library.
