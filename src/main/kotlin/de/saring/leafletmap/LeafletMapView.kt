@@ -219,6 +219,28 @@ class LeafletMapView : StackPane() {
         execScript("$markerName.setIcon(${newMarker.iconName});")
     }
 
+    /**
+     * Activates the on marker click alert
+     */
+    fun addOnMarkerClick(markerName: String, icao: String){
+        execScript("$markerName.on('click', function(e){ alert('plane,$icao')})")
+    }
+
+    /**
+     * Activates the move alert
+     */
+    fun initMapDrag(){
+        execScript("myMap.on('moveend', function (e) { alert('move,' + myMap.getCenter()); });");
+    }
+
+    /**
+     * Activates the click alert
+     */
+    fun initMapClick(){
+        execScript("myMap.on('click', function (e) { alert('click,' + e.latlng); });");
+    }
+
+    /**
      * Draws a track path along the specified positions in the color red and zooms the map to fit the track perfectly.
      *
      * @param positions list of track positions
@@ -239,4 +261,13 @@ class LeafletMapView : StackPane() {
     }
 
     private fun execScript(script: String) = webEngine.executeScript(script)
+
+    /**
+     * Returns the WebEngine of the map
+     *
+     * @return the webEngine
+     */
+    fun getWebEngine(): WebEngine{
+        return webEngine
+    }
 }
