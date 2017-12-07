@@ -16,6 +16,7 @@ import java.util.concurrent.CompletableFuture
  * parent automatically.
  *
  * @author Stefan Saring
+ * @author Niklas Kellner
  */
 class LeafletMapView : StackPane() {
 
@@ -158,6 +159,14 @@ class LeafletMapView : StackPane() {
     }
 
     /**
+     * Removes an existing marker from the map
+     *
+     * @param markerName variable name of the marker
+     */
+    fun removeMarker(markerName: String) {
+        execScript("myMap.removeLayer($markerName);")
+    }
+
      * Draws a track path along the specified positions in the color red and zooms the map to fit the track perfectly.
      *
      * @param positions list of track positions
