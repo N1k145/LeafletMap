@@ -1,5 +1,7 @@
 ## LeafletMap
 
+####This is a fork of https://github.com/ssaring/sportstracker/tree/master/leafletmap
+
 LeafletMap is a JavaFX component for displaying an OpenStreetMap based map
 inside a JavaFX WebView by using the Leaflet JavaScript library.
 
@@ -53,6 +55,12 @@ Both the LeafletMap component and the demo application are written in Kotlin.
 
 #### Changelog
 
+LeafletMap 1.1;
+
+* Added support for CustomMarkers
+* Added removeMarker function
+* Added changeIconOfMarker function
+
 LeafletMap 1.0.2:
 
 * Updated to Kotlin 1.2.0
@@ -67,6 +75,8 @@ LeafletMap 1.0.1:
 #### License
 
 (C) 2017 Stefan Saring
+
+(C) 2017 Niklas Kellner
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
