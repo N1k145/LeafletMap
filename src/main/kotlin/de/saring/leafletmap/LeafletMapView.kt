@@ -149,6 +149,23 @@ class LeafletMapView : StackPane() {
     }
 
     /**
+     * Sets a custom marker at the specified geographical position.
+     *
+     * @param position marker position
+     * @param title marker title shown in tooltip (pass empty string when tooltip not needed)
+     * @param marker customMarkerDesign
+     * @param zIndexOffset zIndexOffset (higher number means on top)
+     * @return variable name of the created marker
+     */
+    fun addMarker(position: LatLong, title: String, marker: String, zIndexOffset: Int): String {
+        val varName = "marker${varNameSuffix++}"
+
+        execScript("var $varName = L.marker([${position.latitude}, ${position.longitude}], "
+                + "{title: '$title', icon: $marker, zIndexOffset: $zIndexOffset}).addTo(myMap);")
+        return varName;
+    }
+
+    /**
      * Moves the existing marker specified by the variable name to the new geographical position.
      *
      * @param markerName variable name of the marker
@@ -165,6 +182,21 @@ class LeafletMapView : StackPane() {
      */
     fun removeMarker(markerName: String) {
         execScript("myMap.removeLayer($markerName);")
+    }
+
+    /**
+     * Adds a custom marker type
+     *
+     * @param markerName the name of the marker type
+     * @param iconUrl the url if the marker icon
+     */
+    fun addCustomMarker(markerName: String, iconUrl: String):String{
+        execScript("var $markerName = L.icon({\n" +
+                "iconUrl: '$iconUrl',\n" +
+                "iconSize: [24, 24],\n" +
+                "iconAnchor: [12, 12],\n" +
+                "});");
+        return markerName
     }
 
      * Draws a track path along the specified positions in the color red and zooms the map to fit the track perfectly.
