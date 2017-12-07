@@ -219,6 +219,7 @@ class LeafletMapView : StackPane() {
         execScript("$markerName.setIcon(${newMarker.iconName});")
     }
 
+    /**
      * Draws a track path along the specified positions in the color red and zooms the map to fit the track perfectly.
      *
      * @param positions list of track positions
