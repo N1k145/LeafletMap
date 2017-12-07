@@ -199,6 +199,26 @@ class LeafletMapView : StackPane() {
         return markerName
     }
 
+    /**
+     * Changes the icon of the marker
+     *
+     * @param markerName the name of the marker
+     * @param newIcon the name of the new icon
+     */
+    fun changeIconOfMarker(markerName: String, newIcon: String){
+        execScript("$markerName.setIcon($newIcon);")
+    }
+
+    /**
+     * Changes the icon of the marker
+     *
+     * @param markerName the name of the marker
+     * @param newMarker the new ColorMarker
+     */
+    fun changeIconOfMarker(markerName: String, newMarker: ColorMarker){
+        execScript("$markerName.setIcon(${newMarker.iconName});")
+    }
+
      * Draws a track path along the specified positions in the color red and zooms the map to fit the track perfectly.
      *
      * @param positions list of track positions
