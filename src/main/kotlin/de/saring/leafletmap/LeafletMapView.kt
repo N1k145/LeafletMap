@@ -137,56 +137,21 @@ class LeafletMapView : StackPane() {
         execScript("myMap.setZoom([$zoomLevel]);")
 
     /**
-     * Sets a marker at the specified geographical position.
+     * Adds a Marker Object to a map
      *
-     * @param position marker position
-     * @param title marker title shown in tooltip (pass empty string when tooltip not needed)
-     * @param marker marker color
-     * @param zIndexOffset zIndexOffset (higher number means on top)
-     * @return variable name of the created marker
+     * @param marker the Marker Object
      */
-    fun addMarker(position: LatLong, title: String, marker: ColorMarker, zIndexOffset: Int): String {
-        val varName = "marker${varNameSuffix++}"
-
-        execScript("var $varName = L.marker([${position.latitude}, ${position.longitude}], "
-                + "{title: '$title', icon: ${marker.iconName}, zIndexOffset: $zIndexOffset}).addTo(myMap);")
-        return varName;
-    }
-
-    /**
-     * Sets a custom marker at the specified geographical position.
-     *
-     * @param position marker position
-     * @param title marker title shown in tooltip (pass empty string when tooltip not needed)
-     * @param marker customMarkerDesign
-     * @param zIndexOffset zIndexOffset (higher number means on top)
-     * @return variable name of the created marker
-     */
-    fun addMarker(position: LatLong, title: String, marker: String, zIndexOffset: Int): String {
-        val varName = "marker${varNameSuffix++}"
-
-        execScript("var $varName = L.marker([${position.latitude}, ${position.longitude}], "
-                + "{title: '$title', icon: $marker, zIndexOffset: $zIndexOffset}).addTo(myMap);")
-        return varName;
-    }
-
-    /**
-     * Moves the existing marker specified by the variable name to the new geographical position.
-     *
-     * @param markerName variable name of the marker
-     * @param position new marker position
-     */
-    fun moveMarker(markerName: String, position: LatLong) {
-        execScript("$markerName.setLatLng([${position.latitude}, ${position.longitude}]);")
+    fun addMarker(marker: Marker){
+        marker.addToMap(getNextMarkerName(), this)
     }
 
     /**
      * Removes an existing marker from the map
      *
-     * @param markerName variable name of the marker
+     * @param marker the Marker object
      */
-    fun removeMarker(markerName: String) {
-        execScript("myMap.removeLayer($markerName);")
+    fun removeMarker(marker: Marker) {
+        execScript("myMap.removeLayer(${marker.getName()});")
     }
 
     /**
@@ -202,41 +167,6 @@ class LeafletMapView : StackPane() {
                 "iconAnchor: [12, 12],\n" +
                 "});");
         return markerName
-    }
-
-    /**
-     * Changes the icon of the marker
-     *
-     * @param markerName the name of the marker
-     * @param newIcon the name of the new icon
-     */
-    fun changeIconOfMarker(markerName: String, newIcon: String){
-        execScript("$markerName.setIcon($newIcon);")
-    }
-
-    /**
-     * Changes the icon of the marker
-     *
-     * @param markerName the name of the marker
-     * @param newMarker the new ColorMarker
-     */
-    fun changeIconOfMarker(markerName: String, newMarker: ColorMarker){
-        execScript("$markerName.setIcon(${newMarker.iconName});")
-    }
-
-    /**
-     * Sets an marker clickable
-     *
-     * @param markerName the name of the marker
-     * @return is the marker clickable
-     */
-    fun setMarkerClickable(markerName: String):Boolean{
-        return if(markerClickEvent.isListenerSet()) {
-            execScript("$markerName.on('click', function(e){ document.java.markerClick($markerName.options.title)})")
-            true
-        } else {
-            false
-        }
     }
 
     /**
@@ -317,5 +247,7 @@ class LeafletMapView : StackPane() {
             |myMap.fitBounds(polyline.getBounds());""".trimMargin())
     }
 
-    private fun execScript(script: String) = webEngine.executeScript(script)
+    internal fun execScript(script: String) = webEngine.executeScript(script)
+
+    private fun getNextMarkerName() : String = "marker${varNameSuffix++}"
 }
