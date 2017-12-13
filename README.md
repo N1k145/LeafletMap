@@ -55,7 +55,15 @@ Both the LeafletMap component and the demo application are written in Kotlin.
 
 #### Changelog
 
-LeafletMap 1.1;
+LeafletMap 1.1.2:
+
+* Added Events
+    * MarkerClickEvent
+    * MapClickedEvent
+    * MapMovedEvent
+
+
+LeafletMap 1.1:
 
 * Added support for CustomMarkers
 * Added removeMarker function

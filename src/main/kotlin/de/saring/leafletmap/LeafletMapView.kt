@@ -1,11 +1,13 @@
 package de.saring.leafletmap
 
+import de.saring.leafletmap.events.*
 import javafx.scene.layout.StackPane
 import javafx.scene.web.WebEngine
 import javafx.scene.web.WebView
 
 import java.net.URL
 import javafx.concurrent.Worker
+import netscape.javascript.JSObject
 import java.util.concurrent.CompletableFuture
 
 
@@ -24,6 +26,9 @@ class LeafletMapView : StackPane() {
     private val webEngine: WebEngine = webView.engine
 
     private var varNameSuffix: Int = 1
+    private val mapClickEvent = MapClickEventMaker()
+    private val markerClickEvent = MarkerClickEventMaker()
+    private val mapMoveEvent = MapMoveEventMaker()
 
     /**
      * Creates the LeafletMapView component, it does not show any map yet.
@@ -217,6 +222,79 @@ class LeafletMapView : StackPane() {
      */
     fun changeIconOfMarker(markerName: String, newMarker: ColorMarker){
         execScript("$markerName.setIcon(${newMarker.iconName});")
+    }
+
+    /**
+     * Sets an marker clickable
+     *
+     * @param markerName the name of the marker
+     * @return is the marker clickable
+     */
+    fun setMarkerClickable(markerName: String):Boolean{
+        return if(markerClickEvent.isListenerSet()) {
+            execScript("$markerName.on('click', function(e){ document.java.markerClick($markerName.options.title)})")
+            true
+        } else {
+            false
+        }
+    }
+
+    /**
+     * Sets the onMarkerClickListener
+     *
+     * @param listener the onMarerClickEventListener
+     */
+    fun onMarkerClick(listener: MarkerClickEventListener){
+        val win = execScript("document") as JSObject
+        win.setMember("java", this)
+        markerClickEvent.addListener(listener)
+    }
+
+    /**
+     * Handles the callback from the markerClickEvent
+     */
+    fun markerClick(title: String){
+        markerClickEvent.MarkerClickEvent(title)
+    }
+
+    /**
+     * Sets the onMapMoveListener
+     *
+     * @param listener the MapMoveEventListener
+     */
+    fun onMapMove(listener: MapMoveEventListener){
+        val win = execScript("document") as JSObject
+        win.setMember("java", this)
+        execScript("myMap.on('moveend', function(e){ document.java.mapMove(myMap.getCenter().lat, myMap.getCenter().lng);});")
+        mapMoveEvent.addListener(listener)
+    }
+
+    /**
+     * Handles the callback from the mapMoveEvent
+     */
+    fun mapMove(lat: Double, lng: Double){
+        val latlng = LatLong(lat, lng)
+        mapMoveEvent.MapMoveEvent(latlng)
+    }
+
+    /**
+     * Sets the onMapClickListener
+     *
+     * @param listener the onMapClickEventListener
+     */
+    fun onMapClick(listener: MapClickEventListener){
+        val win = execScript("document") as JSObject
+        win.setMember("java", this)
+        execScript("myMap.on('click', function(e){ document.java.mapClick(e.latlng.lat, e.latlng.lng);});")
+        mapClickEvent.addListener(listener)
+    }
+
+    /**
+     * Handles the callback from the mapClickEvent
+     */
+    fun mapClick(lat: Double, lng: Double){
+        val latlng = LatLong(lat, lng)
+        mapClickEvent.MapClickEvent(latlng)
     }
 
     /**
