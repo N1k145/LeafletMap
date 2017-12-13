@@ -57,7 +57,7 @@ Both the LeafletMap component and the demo application are written in Kotlin.
 
 LeafletMap 1.1.3:
 
-* Added Class from Marker
+* Added Wraper Class for Marker
 
 LeafletMap 1.1.2:
 
