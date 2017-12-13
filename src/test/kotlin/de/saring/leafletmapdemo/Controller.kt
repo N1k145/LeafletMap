@@ -22,7 +22,7 @@ class Controller {
 
     private val positionTooltip = Tooltip()
 
-    private var positionMarkerName: String? = null
+    private var positionMarker: Marker? = null
 
     @FXML
     fun initialize() {
@@ -54,11 +54,11 @@ class Controller {
 
         // display lap markers first, start and end needs to be displayed on top
         for (i in 0 until track.lapsPositions.size) {
-            mapView.addMarker(track.lapsPositions[i], "Lap ${i + 1}", ColorMarker.GREY_MARKER, 0)
+           mapView.addMarker(Marker(track.lapsPositions[i], "Lap ${i + 1}", ColorMarker.GREY_MARKER, 0))
         }
 
-        mapView.addMarker(track.positions.first(), "Start", ColorMarker.GREEN_MARKER, 1000)
-        mapView.addMarker(track.positions.last(), "End", ColorMarker.RED_MARKER, 2000)
+        mapView.addMarker(Marker(track.positions.first(), "Start", ColorMarker.GREEN_MARKER, 1000))
+        mapView.addMarker(Marker(track.positions.last(), "End", ColorMarker.RED_MARKER, 2000))
 
         mapView.addTrack(track.positions)
 
@@ -75,10 +75,11 @@ class Controller {
         val positionIndex = slPosition.value.toInt()
         val position = track.positions[positionIndex]
 
-        if (positionMarkerName == null) {
-            positionMarkerName = mapView.addMarker(position, "", ColorMarker.BLUE_MARKER, 0)
+        if (positionMarker == null) {
+            positionMarker = Marker(position, "", ColorMarker.BLUE_MARKER, 0)
+            mapView.addMarker(positionMarker!!)
         } else {
-            mapView.moveMarker(positionMarkerName!!, position)
+            positionMarker!!.move(position)
         }
 
         displayPositionTooltip(positionIndex)
