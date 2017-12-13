@@ -318,13 +318,4 @@ class LeafletMapView : StackPane() {
     }
 
     private fun execScript(script: String) = webEngine.executeScript(script)
-
-    /**
-     * Returns the WebEngine of the map
-     *
-     * @return the webEngine
-     */
-    fun getWebEngine(): WebEngine{
-        return webEngine
-    }
 }
