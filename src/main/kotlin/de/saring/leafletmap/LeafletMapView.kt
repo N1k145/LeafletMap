@@ -139,14 +139,14 @@ class LeafletMapView : StackPane() {
      * @param zoomLevel zoom level (0 - 19 for OpenStreetMap)
      */
     fun setZoom(zoomLevel: Int) =
-        execScript("myMap.setZoom([$zoomLevel]);")
+            execScript("myMap.setZoom([$zoomLevel]);")
 
     /**
      * Adds a Marker Object to a map
      *
      * @param marker the Marker Object
      */
-    fun addMarker(marker: Marker){
+    fun addMarker(marker: Marker) {
         marker.addToMap(getNextMarkerName(), this)
     }
 
@@ -165,12 +165,12 @@ class LeafletMapView : StackPane() {
      * @param markerName the name of the marker type
      * @param iconUrl the url if the marker icon
      */
-    fun addCustomMarker(markerName: String, iconUrl: String):String{
+    fun addCustomMarker(markerName: String, iconUrl: String): String {
         execScript("var $markerName = L.icon({\n" +
                 "iconUrl: '${createImage(iconUrl, "png")}',\n" +
                 "iconSize: [24, 24],\n" +
                 "iconAnchor: [12, 12],\n" +
-                "});");
+                "});")
         return markerName
     }
 
@@ -198,7 +198,7 @@ class LeafletMapView : StackPane() {
      *
      * @param listener the onMarerClickEventListener
      */
-    fun onMarkerClick(listener: MarkerClickEventListener){
+    fun onMarkerClick(listener: MarkerClickEventListener) {
         val win = execScript("document") as JSObject
         win.setMember("java", this)
         markerClickEvent.addListener(listener)
@@ -207,7 +207,7 @@ class LeafletMapView : StackPane() {
     /**
      * Handles the callback from the markerClickEvent
      */
-    fun markerClick(title: String){
+    fun markerClick(title: String) {
         markerClickEvent.MarkerClickEvent(title)
     }
 
@@ -216,7 +216,7 @@ class LeafletMapView : StackPane() {
      *
      * @param listener the MapMoveEventListener
      */
-    fun onMapMove(listener: MapMoveEventListener){
+    fun onMapMove(listener: MapMoveEventListener) {
         val win = execScript("document") as JSObject
         win.setMember("java", this)
         execScript("myMap.on('moveend', function(e){ document.java.mapMove(myMap.getCenter().lat, myMap.getCenter().lng);});")
@@ -226,7 +226,7 @@ class LeafletMapView : StackPane() {
     /**
      * Handles the callback from the mapMoveEvent
      */
-    fun mapMove(lat: Double, lng: Double){
+    fun mapMove(lat: Double, lng: Double) {
         val latlng = LatLong(lat, lng)
         mapMoveEvent.MapMoveEvent(latlng)
     }
@@ -236,7 +236,7 @@ class LeafletMapView : StackPane() {
      *
      * @param listener the onMapClickEventListener
      */
-    fun onMapClick(listener: MapClickEventListener){
+    fun onMapClick(listener: MapClickEventListener) {
         val win = execScript("document") as JSObject
         win.setMember("java", this)
         execScript("myMap.on('click', function(e){ document.java.mapClick(e.latlng.lat, e.latlng.lng);});")
@@ -246,7 +246,7 @@ class LeafletMapView : StackPane() {
     /**
      * Handles the callback from the mapClickEvent
      */
-    fun mapClick(lat: Double, lng: Double){
+    fun mapClick(lat: Double, lng: Double) {
         val latlng = LatLong(lat, lng)
         mapClickEvent.MapClickEvent(latlng)
     }
@@ -273,5 +273,5 @@ class LeafletMapView : StackPane() {
 
     internal fun execScript(script: String) = webEngine.executeScript(script)
 
-    private fun getNextMarkerName() : String = "marker${varNameSuffix++}"
+    private fun getNextMarkerName(): String = "marker${varNameSuffix++}"
 }
