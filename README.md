@@ -55,9 +55,13 @@ Both the LeafletMap component and the demo application are written in Kotlin.
 
 #### Changelog
 
+LeafletMap 1.1.4:
+
+* Improved support for customMarkers
+
 LeafletMap 1.1.3:
 
-* Added Wraper Class for Marker
+* Added Wrapper Class for Marker
 
 LeafletMap 1.1.2:
 
@@ -69,7 +73,7 @@ LeafletMap 1.1.2:
 
 LeafletMap 1.1:
 
-* Added support for CustomMarkers
+* Added support for customMarkers
 * Added removeMarker function
 * Added changeIconOfMarker function
 
