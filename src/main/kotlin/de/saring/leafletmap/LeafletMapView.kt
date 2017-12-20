@@ -162,11 +162,30 @@ class LeafletMapView : StackPane() {
      */
     fun addCustomMarker(markerName: String, iconUrl: String):String{
         execScript("var $markerName = L.icon({\n" +
-                "iconUrl: '$iconUrl',\n" +
+                "iconUrl: '${createImage(iconUrl, "png")}',\n" +
                 "iconSize: [24, 24],\n" +
                 "iconAnchor: [12, 12],\n" +
                 "});");
         return markerName
+    }
+
+    private fun createImage(path: String, type: String): String {
+        val image = ImageIO.read(File(path))
+        var imageString: String? = null
+        val bos = ByteArrayOutputStream()
+
+        try {
+            ImageIO.write(image, type, bos)
+            val imageBytes = bos.toByteArray()
+
+            val encoder = Base64.getEncoder()
+            imageString = encoder.encodeToString(imageBytes)
+
+            bos.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return "data:image/$type;base64,$imageString"
     }
 
     /**
