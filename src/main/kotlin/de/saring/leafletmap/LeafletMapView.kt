@@ -8,7 +8,12 @@ import javafx.scene.web.WebView
 import java.net.URL
 import javafx.concurrent.Worker
 import netscape.javascript.JSObject
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.util.*
 import java.util.concurrent.CompletableFuture
+import javax.imageio.ImageIO
 
 
 /**
