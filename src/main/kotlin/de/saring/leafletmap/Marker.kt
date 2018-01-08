@@ -12,8 +12,9 @@ package de.saring.leafletmap
  */
 class Marker private constructor(private var position: LatLong, private var title: String, private var zIndexOffset: Int) {
     private var marker = ColorMarker.RED_MARKER.iconName
-    private lateinit var map : LeafletMapView
-
+    private lateinit var map: LeafletMapView
+    private var attached = false
+    private var clickable = false
     private var name = ""
 
     /**
@@ -51,8 +52,12 @@ class Marker private constructor(private var position: LatLong, private var titl
     internal fun addToMap(nextMarkerName: String, map: LeafletMapView) {
         this.name = nextMarkerName
         this.map = map
+        this.attached = true
         map.execScript("var $name = L.marker([${position.latitude}, ${position.longitude}], "
                 + "{title: '$title', icon: ${marker}, zIndexOffset: $zIndexOffset}).addTo(myMap);")
+        if (clickable) {
+            setClickable()
+        }
     }
 
     /**
@@ -61,7 +66,10 @@ class Marker private constructor(private var position: LatLong, private var titl
      * @param newIcon the name of the new icon
      */
     fun changeIcon(newIcon: String) {
-        map.execScript("$name.setIcon($newIcon);")
+        this.marker = newIcon
+        if (attached) {
+            map.execScript("$name.setIcon($marker);")
+        }
     }
 
     /**
@@ -70,7 +78,10 @@ class Marker private constructor(private var position: LatLong, private var titl
      * @param newIcon the new ColorMarker
      */
     fun changeIcon(newIcon: ColorMarker) {
-        map.execScript("$name.setIcon(${newIcon.iconName});")
+        this.marker = newIcon.iconName
+        if (attached) {
+            map.execScript("$name.setIcon(${newIcon.iconName});")
+        }
     }
 
     /**
@@ -79,14 +90,20 @@ class Marker private constructor(private var position: LatLong, private var titl
      * @param position new marker position
      */
     fun move(position: LatLong) {
-        map.execScript("$name.setLatLng([${position.latitude}, ${position.longitude}]);")
+        this.position = position
+        if (attached) {
+            map.execScript("$name.setLatLng([${this.position.latitude}, ${this.position.longitude}]);")
+        }
     }
 
     /**
      * Sets the marker clickable
      */
     fun setClickable() {
-        map.execScript("$name.on('click', function(e){ document.java.markerClick($name.options.title)})")
+        this.clickable = true
+        if (attached) {
+            map.execScript("$name.on('click', function(e){ document.java.markerClick($name.options.title)})")
+        }
     }
 
     internal fun getName(): String = this.name
