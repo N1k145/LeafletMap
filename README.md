@@ -55,6 +55,10 @@ Both the LeafletMap component and the demo application are written in Kotlin.
 
 #### Changelog
 
+LeafletMap 1.1.4.1:
+
+* Bugfix
+
 LeafletMap 1.1.4:
 
 * Improved support for customMarkers
